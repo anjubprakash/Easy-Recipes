@@ -1,1 +1,1 @@
-# Easy-Recipes
+# Recipes-Hub
