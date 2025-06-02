@@ -10,6 +10,7 @@ const Home = () => {
   const [recipes, setRecipes] = useState([])
   const [cindex, setCindex] = useState(0)
   const [fav, setFav] = useState(true)
+  const [searchResults, setSearchResults] = useState()
   
   const navigate = useNavigate();
   
@@ -100,21 +101,39 @@ const Home = () => {
 
   return (
     <>
-    <div className='body' >
-
-              <div className="container">
+      <div className='body' >
+      <Navbar onSearchResults={setSearchResults} />
+      {searchResults && searchResults.length > 0 ? (
+            <div className=''>
+              <h2 >Search Results</h2>
+              <div className='favdata'>
+           {searchResults.map((meal) => (
+                  <div key={meal.idMeal} className='favdiv'>
+                        <img src={meal.strMealThumb} alt={meal.strMeal} width='250' height='250' />
+                       <h1>{meal.strMeal}</h1>                 
+                      <h2>Category: {meal.strCategory}</h2>
+                      <h2>Origin: {meal.strArea}</h2>
+                      <button onClick={() => navigate(`./learnmore/${meal.idMeal}`, { state: { meal } })}>
+                        Learn More
+                      </button>
+                  </div>
+             ))}
+              </div>
+            </div>
+        ) : (
+            <>
+                          <div className="container">
                 <img src={bg} alt="Background" className="bg" />
                   <div className="quotediv">
-                  <Navbar />
-                    <div className="quote">
+                  <Navbar onSearchResults={setSearchResults} />
+                  <div className="quote">
                         <h1>"Good food is the foundation of genuine happiness."</h1>
                         <h2 className='author'>– Auguste Escoffier</h2>
                         <h3>Cooking is more than just feeding — it’s storytelling through ingredients. With every stir, spice, and simmer, we celebrate culture, emotion, and the joy of sharing meals with those we love. Let your kitchen be a gateway to the world.</h3>
                     </div>
                     </div>
-            </div>
-
-
+        </div>
+       
       <div className='carousel'>          
           {recipes.length > 0 ? (
             <div>
@@ -143,7 +162,8 @@ const Home = () => {
       
         </div>   
         <MoreMeal />
-
+            </>            
+          )}
       </div>
     </>
   )
